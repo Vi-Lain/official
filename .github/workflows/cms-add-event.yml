@@ -1,0 +1,88 @@
+name: "CMS 04 - EVENTを登録"
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "イベント名"
+        required: true
+        type: string
+      date:
+        description: "開催日時・表示用テキスト"
+        required: true
+        type: string
+      description:
+        description: "説明"
+        required: false
+        type: string
+      url:
+        description: "詳細・チケットURL"
+        required: false
+        type: string
+      image:
+        description: "画像パス（任意）"
+        required: false
+        type: string
+      add_to_news:
+        description: "NEWSにも同時掲載する"
+        required: true
+        default: true
+        type: boolean
+      news_date:
+        description: "NEWS表示日（YYYY-MM-DD・空欄で今日）"
+        required: false
+        type: string
+      published:
+        description: "すぐ公開する"
+        required: true
+        default: true
+        type: boolean
+      publish_at:
+        description: "公開予約（例 2026-09-06T20:00:00+09:00）"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Add EVENT
+        env:
+          TITLE: ${{ inputs.title }}
+          DATE: ${{ inputs.date }}
+          DESCRIPTION: ${{ inputs.description }}
+          URL: ${{ inputs.url }}
+          IMAGE: ${{ inputs.image }}
+          ADD_TO_NEWS: ${{ inputs.add_to_news }}
+          NEWS_DATE: ${{ inputs.news_date }}
+          PUBLISHED: ${{ inputs.published }}
+          PUBLISH_AT: ${{ inputs.publish_at }}
+        run: |
+          python scripts/cms.py add-event \
+            --title "$TITLE" \
+            --date "$DATE" \
+            --description "$DESCRIPTION" \
+            --url "$URL" \
+            --image "$IMAGE" \
+            --add-to-news "$ADD_TO_NEWS" \
+            --news-date "$NEWS_DATE" \
+            --published "$PUBLISHED" \
+            --publish-at "$PUBLISH_AT"
+      - name: Commit CMS changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cms/content.json data/content.js
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "CMS: ${{ github.workflow }}"
+          git push

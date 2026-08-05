@@ -1,0 +1,90 @@
+name: "CMS 03 - GOODSを追加"
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "商品名"
+        required: true
+        type: string
+      status:
+        description: "販売状況"
+        required: true
+        default: "ON SALE"
+        type: choice
+        options: ["COMING SOON", "ON SALE", "SOLD OUT", "販売終了"]
+      image:
+        description: "画像パス（例 assets/uploads/goods.webp）"
+        required: true
+        type: string
+      description:
+        description: "商品説明"
+        required: false
+        type: string
+      url:
+        description: "販売ページURL"
+        required: true
+        type: string
+      price:
+        description: "価格（任意）"
+        required: false
+        type: string
+      sort:
+        description: "並び順（大きい数字を先に表示）"
+        required: true
+        default: "0"
+        type: string
+      published:
+        description: "すぐ公開する"
+        required: true
+        default: true
+        type: boolean
+      publish_at:
+        description: "公開予約（例 2026-09-06T20:00:00+09:00）"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Add GOODS
+        env:
+          TITLE: ${{ inputs.title }}
+          STATUS: ${{ inputs.status }}
+          IMAGE: ${{ inputs.image }}
+          DESCRIPTION: ${{ inputs.description }}
+          URL: ${{ inputs.url }}
+          PRICE: ${{ inputs.price }}
+          SORT: ${{ inputs.sort }}
+          PUBLISHED: ${{ inputs.published }}
+          PUBLISH_AT: ${{ inputs.publish_at }}
+        run: |
+          python scripts/cms.py add-goods \
+            --title "$TITLE" \
+            --status "$STATUS" \
+            --image "$IMAGE" \
+            --description "$DESCRIPTION" \
+            --url "$URL" \
+            --price "$PRICE" \
+            --sort "$SORT" \
+            --published "$PUBLISHED" \
+            --publish-at "$PUBLISH_AT"
+      - name: Commit CMS changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cms/content.json data/content.js
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "CMS: ${{ github.workflow }}"
+          git push
