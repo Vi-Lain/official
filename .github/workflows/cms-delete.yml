@@ -7,9 +7,13 @@ on:
         description: "削除する種類"
         required: true
         type: choice
-        options: [news, music, goods, events]
+        options:
+          - news
+          - music
+          - goods
+          - events
       current_title:
-        description: "削除するタイトル（完全一致）"
+        description: "削除する現在のタイトル（完全一致）"
         required: true
         type: string
       confirmation:
@@ -23,6 +27,7 @@ permissions:
 jobs:
   delete:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -35,7 +40,7 @@ jobs:
           CONFIRMATION: ${{ inputs.confirmation }}
         run: |
           if [ "$CONFIRMATION" != "DELETE" ]; then
-            echo "確認文字が違います。"
+            echo "確認文字が違います。DELETE と入力してください。"
             exit 1
           fi
 
@@ -53,5 +58,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add cms/content.json cms/INDEX.md data/content.js
+
+          if git diff --cached --quiet; then
+            echo "削除による変更がありません。"
+            exit 0
+          fi
+
           git commit -m "CMS: delete content"
           git push
