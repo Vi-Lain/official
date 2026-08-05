@@ -1,0 +1,36 @@
+name: "CMS 00 - 接続チェック"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check CMS_PAT
+        env:
+          CMS_PAT: ${{ secrets.CMS_PAT }}
+        run: |
+          if [ -z "$CMS_PAT" ]; then
+            echo "CMS_PAT が登録されていません。"
+            exit 1
+          fi
+          echo "CMS_PAT is configured."
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CMS_PAT }}
+          persist-credentials: true
+        with:
+          token: ${{ secrets.CMS_PAT }}
+          persist-credentials: true
+
+      - name: Check CMS files
+        run: |
+          test -f cms/content.json
+          test -f scripts/cms.py
+          test -f scripts/generate_cms_workflows.py
+          echo "CMS files are ready."
