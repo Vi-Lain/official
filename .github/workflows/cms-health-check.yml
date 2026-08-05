@@ -24,9 +24,6 @@ jobs:
         with:
           token: ${{ secrets.CMS_PAT }}
           persist-credentials: true
-        with:
-          token: ${{ secrets.CMS_PAT }}
-          persist-credentials: true
 
       - name: Check CMS files
         run: |
