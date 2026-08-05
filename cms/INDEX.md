@@ -8,6 +8,7 @@
 |---|---|---|
 | `news-site-start` | 公開 | Vi-Lain Official Website 制作開始 |
 | `news-alrod-3rd-goods` | 公開 | アルロッド3周年ちびキャラグッズ 販売中 |
+| `news-20260805110523-697130` | 公開 | Vi-Lain公式サイト完成 |
 
 ## MUSIC
 
