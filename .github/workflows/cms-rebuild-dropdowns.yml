@@ -1,10 +1,18 @@
-name: "LEGACY 02 - 使用禁止（旧選択肢再生成）"
+name: "LEGACY - 旧選択肢再生成（使用しない）"
 
-# 旧版CMSの残骸を安全に無効化するためのファイルです。
-# 実行トリガーを持たないため、サイトやCMSへ影響しません。
-on: []
+# 旧版CMSを安全に無効化するための互換Workflowです。
+# 手動実行してもファイルやサイトは変更しません。
+on:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-jobs: {}
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Legacy workflow disabled
+        run: |
+          echo "このWorkflowは旧版のため無効化されています。"
+          echo "現在はCMS 00〜07を使用してください。"
