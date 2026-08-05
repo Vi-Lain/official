@@ -9,8 +9,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from generate_cms_workflows import generate_workflows
-
 ROOT = Path(__file__).resolve().parents[1]
 CMS_FILE = ROOT / "cms" / "content.json"
 OUTPUT_FILE = ROOT / "data" / "content.js"
@@ -299,17 +297,55 @@ def write_index(data: dict) -> None:
     INDEX_FILE.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+
+def find_by_title(data: dict, collection: str, title: str) -> dict:
+    title = title.strip()
+    if not title:
+        raise SystemExit("現在のタイトルを入力してください。")
+
+    items = data.get(collection, [])
+
+    matches = [
+        item for item in items
+        if str(item.get("title", "")).strip() == title
+    ]
+
+    if not matches:
+        normalized = "".join(title.split()).lower()
+        matches = [
+            item for item in items
+            if "".join(str(item.get("title", "")).split()).lower() == normalized
+        ]
+
+    if not matches:
+        raise SystemExit(
+            f"タイトルが見つかりません: {title}\n"
+            "cms/INDEX.mdで現在のタイトルを確認してください。"
+        )
+
+    if len(matches) > 1:
+        raise SystemExit(
+            "同じタイトルが複数あります。片方のタイトルを一度変更してください。"
+        )
+
+    return matches[0]
+
+
+
 def edit_item(args: argparse.Namespace, data: dict) -> None:
     collection = args.collection.lower()
     if collection not in {"news", "music", "goods", "events"}:
         raise SystemExit("対象種類が不正です。")
 
-    item = next(
-        (x for x in data.get(collection, []) if x.get("id") == args.id),
-        None,
-    )
-    if not item:
-        raise SystemExit(f"IDが見つかりません: {args.id}")
+    if args.id:
+        item = next(
+            (x for x in data.get(collection, []) if x.get("id") == args.id),
+            None,
+        )
+        if not item:
+            raise SystemExit(f"IDが見つかりません: {args.id}")
+    else:
+        item = find_by_title(data, collection, args.current_title)
 
     updates = {
         "title": args.title,
@@ -342,12 +378,17 @@ def delete_item(args: argparse.Namespace, data: dict) -> None:
     if collection not in {"news", "music", "goods", "events"}:
         raise SystemExit("対象種類が不正です。")
 
-    items = data.get(collection, [])
-    item = next((x for x in items if x.get("id") == args.id), None)
-    if not item:
-        raise SystemExit(f"IDが見つかりません: {args.id}")
+    if args.id:
+        item = next(
+            (x for x in data.get(collection, []) if x.get("id") == args.id),
+            None,
+        )
+        if not item:
+            raise SystemExit(f"IDが見つかりません: {args.id}")
+    else:
+        item = find_by_title(data, collection, args.current_title)
 
-    items.remove(item)
+    data[collection].remove(item)
 
 
 def parser() -> argparse.ArgumentParser:
@@ -400,7 +441,8 @@ def parser() -> argparse.ArgumentParser:
 
     edit = sub.add_parser("edit")
     edit.add_argument("--collection", required=True)
-    edit.add_argument("--id", required=True)
+    edit.add_argument("--id", default="")
+    edit.add_argument("--current-title", default="")
     edit.add_argument("--title", default="")
     edit.add_argument("--date", default="")
     edit.add_argument("--category", default="")
@@ -415,7 +457,8 @@ def parser() -> argparse.ArgumentParser:
 
     delete = sub.add_parser("delete")
     delete.add_argument("--collection", required=True)
-    delete.add_argument("--id", required=True)
+    delete.add_argument("--id", default="")
+    delete.add_argument("--current-title", default="")
 
     sub.add_parser("build")
     sub.add_parser("list")
@@ -448,7 +491,6 @@ def main() -> None:
         save(data)
     build(data)
     write_index(data)
-    generate_workflows(data)
 
 
 if __name__ == "__main__":
