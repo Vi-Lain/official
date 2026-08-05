@@ -1,4 +1,4 @@
-# Vi-Lain Official Website v5
+# Vi-Lain Official Website
 
 ## v5の主な変更
 - デザインを調整
