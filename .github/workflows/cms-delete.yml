@@ -1,24 +1,17 @@
-name: "CMS 06 - 内容を選んで削除"
+name: "CMS 06 - 内容を削除"
 
 on:
   workflow_dispatch:
     inputs:
-      target:
-        description: "削除する項目をタイトルから選択"
+      collection:
+        description: "削除する種類"
         required: true
         type: choice
-        options:
-          - "NEWS｜Vi-Lain Official Website 制作開始｜公開｜news-site-start"
-          - "NEWS｜アルロッド3周年ちびキャラグッズ 販売中｜公開｜news-alrod-3rd-goods"
-          - "MUSIC｜フィクサー｜公開｜music-4EkQT4mcDRE"
-          - "MUSIC｜KICK BACK｜公開｜music-IJEE3lcAJl4"
-          - "MUSIC｜クリスマスソング｜公開｜music-TNLk16KjMZ4"
-          - "MUSIC｜ラヴィ｜公開｜music-98w0UpVFig4"
-          - "MUSIC｜だいしきゅーだいしゅき｜公開｜music-gf8AhhnpDgk"
-          - "MUSIC｜君のオシゴト手伝います！｜公開｜music-unF6seg9X3g"
-          - "MUSIC｜神っぽいな｜公開｜music-2kKziuZKGiM"
-          - "MUSIC｜Chrom 歌ってみた｜公開｜music-035EH-9aLB0"
-          - "GOODS｜アルロッド3周年ちびキャラグッズ｜公開｜goods-alrod-3rd"
+        options: [news, music, goods, events]
+      current_title:
+        description: "削除するタイトル（完全一致）"
+        required: true
+        type: string
       confirmation:
         description: "削除する場合は DELETE と入力"
         required: true
@@ -26,19 +19,17 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   delete:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.CMS_PAT }}
-          persist-credentials: true
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Confirm deletion
         env:
           CONFIRMATION: ${{ inputs.confirmation }}
@@ -47,34 +38,20 @@ jobs:
             echo "確認文字が違います。"
             exit 1
           fi
-      - name: Parse selected item
-        id: selected
+
+      - name: Delete content
         env:
-          TARGET: ${{ inputs.target }}
-        run: |
-          ITEM_ID="${TARGET##*｜}"
-          PREFIX="${TARGET%%｜*}"
-          case "$PREFIX" in
-            NEWS) COLLECTION="news" ;;
-            MUSIC) COLLECTION="music" ;;
-            GOODS) COLLECTION="goods" ;;
-            EVENT) COLLECTION="events" ;;
-            *) echo "対象を判別できません"; exit 1 ;;
-          esac
-          echo "id=$ITEM_ID" >> "$GITHUB_OUTPUT"
-          echo "collection=$COLLECTION" >> "$GITHUB_OUTPUT"
-      - name: Delete selected item
-        env:
-          COLLECTION: ${{ steps.selected.outputs.collection }}
-          ITEM_ID: ${{ steps.selected.outputs.id }}
+          COLLECTION: ${{ inputs.collection }}
+          CURRENT_TITLE: ${{ inputs.current_title }}
         run: |
           python scripts/cms.py delete \
             --collection "$COLLECTION" \
-            --id "$ITEM_ID"
+            --current-title "$CURRENT_TITLE"
+
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cms/content.json cms/INDEX.md data/content.js .github/workflows/cms-edit.yml .github/workflows/cms-delete.yml
-          git commit -m "CMS: delete selected content"
+          git add cms/content.json cms/INDEX.md data/content.js
+          git commit -m "CMS: delete content"
           git push

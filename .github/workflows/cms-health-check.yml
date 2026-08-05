@@ -1,4 +1,4 @@
-name: "CMS 00 - 接続チェック"
+name: "CMS 00 - 構成チェック"
 
 on:
   workflow_dispatch:
@@ -10,24 +10,16 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check CMS_PAT
-        env:
-          CMS_PAT: ${{ secrets.CMS_PAT }}
-        run: |
-          if [ -z "$CMS_PAT" ]; then
-            echo "CMS_PAT が登録されていません。"
-            exit 1
-          fi
-          echo "CMS_PAT is configured."
-
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.CMS_PAT }}
-          persist-credentials: true
 
-      - name: Check CMS files
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate CMS
         run: |
+          python -m py_compile scripts/cms.py
+          python scripts/cms.py list
           test -f cms/content.json
-          test -f scripts/cms.py
-          test -f scripts/generate_cms_workflows.py
-          echo "CMS files are ready."
+          test -f cms/INDEX.md
+          echo "CMS configuration is valid."

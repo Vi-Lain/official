@@ -1,36 +1,10 @@
-name: "CMS 08 - 選択肢を再生成"
+name: "LEGACY 02 - 使用禁止（旧選択肢再生成）"
 
-on:
-  workflow_dispatch:
+# 旧版CMSの残骸を安全に無効化するためのファイルです。
+# 実行トリガーを持たないため、サイトやCMSへ影響しません。
+on: []
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
-jobs:
-  rebuild:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.CMS_PAT }}
-          persist-credentials: true
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Rebuild CMS index and dropdowns
-        run: python scripts/cms.py build
-
-      - name: Commit generated files
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cms/INDEX.md data/content.js .github/workflows/cms-edit.yml .github/workflows/cms-delete.yml
-          if git diff --cached --quiet; then
-            echo "No generated changes."
-            exit 0
-          fi
-          git commit -m "CMS: rebuild dropdown choices"
-          git push
+jobs: {}

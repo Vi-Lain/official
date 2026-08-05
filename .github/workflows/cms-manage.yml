@@ -1,59 +1,10 @@
-name: "CMS 05 - 公開・非表示・削除・編集"
+name: "LEGACY 01 - 使用禁止（旧CMS管理）"
 
-on:
-  workflow_dispatch:
-    inputs:
-      collection:
-        description: "対象"
-        required: true
-        type: choice
-        options: [news, music, goods, events]
-      id:
-        description: "対象ID（cms/content.jsonで確認）"
-        required: true
-        type: string
-      action:
-        description: "操作"
-        required: true
-        type: choice
-        options: [publish, hide, delete, update]
-      updates:
-        description: '編集時のJSON（例 {"title":"新タイトル"}）'
-        required: true
-        default: "{}"
-        type: string
+# 旧版CMSの残骸を安全に無効化するためのファイルです。
+# 実行トリガーを持たないため、サイトやCMSへ影響しません。
+on: []
 
 permissions:
-  contents: write
+  contents: read
 
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Manage item
-        env:
-          COLLECTION: ${{ inputs.collection }}
-          ITEM_ID: ${{ inputs.id }}
-          ACTION: ${{ inputs.action }}
-          UPDATES: ${{ inputs.updates }}
-        run: |
-          python scripts/cms.py manage \
-            --collection "$COLLECTION" \
-            --id "$ITEM_ID" \
-            --action "$ACTION" \
-            --updates "$UPDATES"
-      - name: Commit CMS changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cms/content.json data/content.js
-          if git diff --cached --quiet; then
-            echo "No changes."
-            exit 0
-          fi
-          git commit -m "CMS: ${{ github.workflow }}"
-          git push
+jobs: {}
