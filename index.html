@@ -1,0 +1,144 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Vi-Lainは、アルロッドとクロムによるAbloop所属のVTuberユニット。"><title>Vi-Lain Official Website</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body>
+<div class="scroll-progress"><i></i></div><div class="cursor-aura"></div><div class="noise"></div><div id="loader" class="loader intro-loader" aria-hidden="false">
+    <div class="intro-split intro-red"></div>
+    <div class="intro-split intro-pink"></div>
+    <div class="intro-grid"></div>
+    <div class="intro-flare"></div>
+
+    <div class="intro-names">
+      <span class="intro-name intro-name-left">ALROD</span>
+      <span class="intro-name intro-name-right">CHROM</span>
+    </div>
+
+    <div class="intro-center">
+      <p class="intro-kicker">ABLOOM VTUBER UNIT</p>
+      <div class="intro-logo-wrap">
+        <img src="assets/logo-temp.webp" alt="Vi-Lain">
+        <span class="intro-logo-scan"></span>
+      </div>
+      <p class="intro-members">ALROD <b>×</b> CHROM</p>
+      <div class="intro-progress"><i></i></div>
+    </div>
+
+    <p class="intro-enter">ENTER THE WORLD OF Vi-Lain</p>
+  </div>
+<header class="header"><a class="brand" href="#home">Vi-Lain</a><button class="menu-button">MENU</button><nav class="nav"><a href="#about">ABOUT</a><a href="#member">MEMBER</a><a href="#news">NEWS</a><a href="#live">LIVE</a><a href="#music">MUSIC</a><a href="#movie">MOVIE</a><a href="#goods">GOODS</a></nav></header>
+<main>
+<section id="home" class="hero"><canvas id="particles"></canvas><div class="beam red"></div><div class="beam violet"></div><img class="hero-member hero-alrod" src="assets/alrod.webp" alt="アルロッド"><img class="hero-member hero-chrome" src="assets/chrome.webp" alt="クロム"><div class="hero-center"><p>ABLOOP VTUBER UNIT</p><img src="assets/logo-temp.webp" alt="Vi-Lain"><span>ALROD × CHROM</span><a href="#about">SCROLL ↓</a></div></section>
+<section id="about" class="section about reveal"><p class="eyebrow">ABOUT</p><h1>ABOUT</h1><p class="section-jp">Vi-Lainについて</p><div class="lead">Vi-Lainは、アルロッドとクロムによる<br>Abloop所属のVTuberユニット。<br><br>ゲーム配信、歌ってみた、<br>オリジナルコンテンツを中心に活動。</div></section>
+<section id="member" class="section members">
+  <div class="member-select-head reveal">
+    <p class="eyebrow">MEMBER</p>
+    <h2>MEMBER</h2>
+    <p class="section-jp">メンバーを選択</p>
+  </div>
+
+  <div class="member-atmosphere">
+    <span class="member-orbit orbit-one"></span>
+    <span class="member-orbit orbit-two"></span>
+    <span class="member-rune">V</span>
+  </div>
+  <div class="member-select-grid">
+    <a class="member-select-card alrod-select reveal member-transition-link" href="members/alrod.html" data-member="ALROD" data-subtitle="アルロッド・ライズ・ヴィンス">
+      <div class="member-select-glow red-glow"></div>
+      <img src="assets/alrod.webp" alt="アルロッド">
+      <div class="member-card-scan"></div>
+      <span class="member-corner corner-a"></span>
+      <span class="member-corner corner-b"></span>
+      <div class="member-select-copy">
+        <span>01</span>
+        <h3>ALROD</h3>
+        <p>アルロッド・ライズ・ヴィンス</p>
+        <strong>VIEW PROFILE →</strong>
+      </div>
+    </a>
+
+    <a class="member-select-card chrom-select reveal member-transition-link chrom-transition-link" href="members/chrom.html" data-member="CHROM" data-subtitle="クロム・ヴァン・ラヴィリー">
+      <div class="member-select-glow violet-glow"></div>
+      <img src="assets/chrome.webp" alt="Chrom">
+      <div class="member-card-scan"></div>
+      <span class="member-corner corner-a"></span>
+      <span class="member-corner corner-b"></span>
+      <div class="member-select-copy">
+        <span>02</span>
+        <h3>CHROM</h3>
+        <p>クロム</p>
+        <strong>VIEW PROFILE →</strong>
+      </div>
+    </a>
+  </div>
+</section>
+<section id="news" class="section reveal"><p class="eyebrow">NEWS</p><h2>NEWS</h2><p class="section-jp">最新情報</p><div id="news-list" class="news-list"></div></section>
+<section id="live" class="section live reveal">
+  <div class="live-section-head">
+    <div>
+      <p class="eyebrow">LIVE</p>
+      <h2>LIVE STATUS</h2>
+      <p class="section-jp">現在の配信状況</p>
+    </div>
+    <div id="live-stream-count" class="live-stream-count">OFFLINE</div>
+  </div>
+  <div id="live-status-area" class="live-status-area"></div>
+</section>
+<section id="music" class="section music reveal">
+  <div class="music-head">
+    <div>
+      <p class="eyebrow">MUSIC</p>
+      <h2>MUSIC</h2>
+      <p class="section-jp">歌ってみた</p>
+    </div>
+    <button id="open-music-library" class="view-all">VIEW ALL</button>
+  </div>
+  <div id="music-list" class="music-preview"></div>
+</section>
+
+<div id="music-library" class="music-library" aria-hidden="true">
+  <div class="music-library-inner">
+    <div class="music-library-header">
+      <div>
+        <span>MUSIC ARCHIVE</span>
+        <h2>ALL SONGS</h2>
+        <p>アルロッドとChromの歌ってみた一覧</p>
+      </div>
+      <button id="close-music-library" class="close-library" aria-label="閉じる">×</button>
+    </div>
+    <div class="music-controls">
+      <div class="music-filters">
+        <button class="music-filter active" data-filter="ALL">ALL</button>
+        <button class="music-filter" data-filter="ALROD">ALROD</button>
+        <button class="music-filter" data-filter="CHROM">CHROM</button>
+        <button class="music-filter" data-filter="VI-LAIN">Vi-Lain</button>
+      </div>
+      <div id="music-count" class="music-count"></div>
+    </div>
+    <div id="music-library-grid" class="music-library-grid"></div>
+    <div class="music-pagination">
+      <button id="music-prev">PREV</button>
+      <span id="music-page"></span>
+      <button id="music-next">NEXT</button>
+    </div>
+  </div>
+</div>
+<section id="movie" class="section movie reveal"><p class="eyebrow">MOVIE</p><h2>MOVIE</h2><p class="section-jp">映像コンテンツ</p><p class="coming-copy">現在準備中です。</p><span>COMING SOON</span></section>
+<section id="goods" class="section reveal"><p class="eyebrow">GOODS</p><h2>GOODS</h2><p class="section-jp">公式グッズ</p><div id="goods-list"></div></section>
+</main><footer><div>Vi-Lain</div><p>ALROD × CHROM / Abloop</p><p>© Vi-Lain. All Rights Reserved.</p></footer>
+
+<div id="page-transition" class="page-transition" aria-hidden="true">
+  <div class="transition-panel transition-panel-one"></div>
+  <div class="transition-panel transition-panel-two"></div>
+  <div class="transition-lines"></div>
+  <div class="transition-content">
+    <span class="transition-kicker">MEMBER PROFILE</span>
+    <div class="transition-character">
+      <img src="assets/alrod.webp" alt="">
+    </div>
+    <div class="transition-copy">
+      <strong>ALROD</strong>
+      <small>アルロッド・ライズ・ヴィンス</small>
+    </div>
+    <div class="transition-progress"><i></i></div>
+  </div>
+</div>
+
+<script src="data/content.js"></script>
+<script src="data/live.js"></script><script src="script.js"></script></body></html>
