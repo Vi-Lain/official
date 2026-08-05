@@ -1,13 +1,4 @@
 window.LIVE_DATA = {
-  "updatedAt": "2026-08-05T13:21:23.208100+00:00",
-  "streams": [
-    {
-      "member": "ALROD",
-      "platform": "Twitch",
-      "title": "やあ。僕は夏休みかぶとむし #ボダタウ",
-      "url": "https://www.twitch.tv/alrod_vtuber",
-      "thumbnail": "https://static-cdn.jtvnw.net/previews-ttv/live_user_alrod_vtuber-1280x720.jpg",
-      "startedAt": "2026-08-05T12:09:45Z"
-    }
-  ]
+  "updatedAt": "2026-08-05T19:04:48.378523+00:00",
+  "streams": []
 };
