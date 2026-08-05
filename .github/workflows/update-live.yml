@@ -1,0 +1,61 @@
+name: Update live status
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+
+  workflow_dispatch:
+    inputs:
+      youtube_member:
+        description: "YouTube確認対象"
+        required: true
+        default: "BOTH"
+        type: choice
+        options:
+          - BOTH
+          - ALROD
+          - CHROM
+          - AUTO
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-live-status
+  cancel-in-progress: true
+
+jobs:
+  update-live:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check YouTube and Twitch
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+          FORCE_YOUTUBE_MEMBER: ${{ github.event.inputs.youtube_member || 'AUTO' }}
+        run: python scripts/update_live.py
+
+      - name: Commit live status
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/live-state.json data/live.js
+
+          if git diff --cached --quiet; then
+            echo "No file changes."
+            exit 0
+          fi
+
+          git commit -m "Update live status"
+          git push
