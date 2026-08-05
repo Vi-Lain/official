@@ -233,3 +233,12 @@ Chromの歌ってみたを7本追加しました。
 - NEWS / MUSIC / GOODS / EVENTを一覧表示
 - 公開・非表示状態も選択肢に表示
 - CMS更新時にActionsの選択肢を自動再生成
+
+
+## v11.0 GitHub-only final CMS
+- GitHub SecretsのCMS_PATでWorkflow更新権限を確保
+- タイトル選択式の編集・削除を維持
+- CMS 00 接続チェックを追加
+- CMS 08 選択肢の手動再生成を追加
+- Cloudflareや外部サービスは不使用
+- 詳細はGITHUB_ONLY_SETUP.md

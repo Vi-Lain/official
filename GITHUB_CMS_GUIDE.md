@@ -80,3 +80,28 @@ Settings
 5. `Run workflow`
 
 追加・編集・削除のたびに、選択肢も自動更新されます。
+
+
+## v11.0 CMS_PAT方式
+
+タイトル一覧の自動更新にはGitHub Secretsの `CMS_PAT` を使用します。
+
+最初に:
+
+```text
+Settings
+→ Secrets and variables
+→ Actions
+→ New repository secret
+```
+
+Secret名を `CMS_PAT` にして、専用GitHubトークンを登録してください。
+
+その後:
+
+```text
+Actions
+→ CMS 00 - 接続チェック
+```
+
+を実行してください。
