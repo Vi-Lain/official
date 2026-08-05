@@ -1,38 +1,24 @@
 
-// Cinematic intro with hard safety fallback
-(function(){
-  const loader=document.querySelector("#loader");
-  if(!loader) return;
-
-  let closed=false;
-  const closeIntro=()=>{
-    if(closed) return;
-    closed=true;
-    loader.classList.add("out");
-    window.setTimeout(()=>{
-      loader.classList.add("hide");
-      loader.setAttribute("aria-hidden","true");
-    },420);
-    window.setTimeout(()=>{
-      loader.classList.add("force-hide");
-    },1300);
-  };
-
-  document.addEventListener("DOMContentLoaded",()=>{
-    window.setTimeout(closeIntro,3000);
-  });
-
-  window.addEventListener("load",()=>{
-    window.setTimeout(closeIntro,2500);
-  });
-
-  // Absolute failsafe
-  window.setTimeout(closeIntro,4200);
-
-  loader.addEventListener("click",closeIntro);
-})();
-
-const q=s=>document.querySelector(s),qa=s=>document.querySelectorAll(s);window.addEventListener("load",()=>setTimeout(()=>q("#loader").classList.add("hide"),800));q(".menu-button").onclick=()=>q(".nav").classList.toggle("open");qa(".nav a").forEach(a=>a.onclick=()=>q(".nav").classList.remove("open"));const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});qa(".reveal").forEach(e=>ob.observe(e));SITE_DATA.news.forEach(n=>q("#news-list").insertAdjacentHTML("beforeend",`<article class="news-item"><time>${n.date}</time><span>${n.category}</span><b>${n.title}</b></article>`));SITE_DATA.goods.forEach(g=>q("#goods-list").insertAdjacentHTML("beforeend",`<a class="goods-card" href="${g.url}" target="_blank"><img src="${g.image}"><div class="goods-copy"><span>${g.status}</span><h3>${g.title}</h3><p>${g.description}</p><strong>VIEW ON BOOTH →</strong></div></a>`));const c=q("#particles"),x=c.getContext("2d");let w,h,p=[];function r(){w=c.width=innerWidth;h=c.height=innerHeight;p=Array.from({length:Math.min(90,Math.floor(w/18))},()=>({x:Math.random()*w,y:Math.random()*h,s:Math.random()*.35+.08,r:Math.random()*1.5+.3,col:Math.random()>.5?"211,31,67":"151,71,255"}))}function d(){x.clearRect(0,0,w,h);p.forEach(a=>{a.y-=a.s;if(a.y<0)a.y=h;x.beginPath();x.fillStyle=`rgba(${a.col},.35)`;x.arc(a.x,a.y,a.r,0,7);x.fill()});requestAnimationFrame(d)}addEventListener("resize",r);r();d();window.addEventListener("scroll",()=>{let y=scrollY;q(".hero-alrod").style.transform=`translateY(${y*.05}px)`;q(".hero-chrome").style.transform=`translateY(${y*.04}px)`;q(".hero-center").style.transform=`translateY(${y*.1}px)`});
+const q=s=>document.querySelector(s),qa=s=>document.querySelectorAll(s);q(".menu-button").onclick=()=>q(".nav").classList.toggle("open");qa(".nav a").forEach(a=>a.onclick=()=>q(".nav").classList.remove("open"));const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});qa(".reveal").forEach(e=>ob.observe(e));SITE_DATA.news.forEach(n=>{
+  const body=`<time>${n.date}</time><span>${n.category}</span><b>${n.title}</b>`;
+  q("#news-list").insertAdjacentHTML(
+    "beforeend",
+    n.url
+      ? `<a class="news-item" href="${n.url}" target="_blank" rel="noopener">${body}</a>`
+      : `<article class="news-item">${body}</article>`
+  );
+});SITE_DATA.goods.forEach(g=>q("#goods-list").insertAdjacentHTML("beforeend",`
+  <a class="goods-card ${g.status==="SOLD OUT"||g.status==="販売終了"?"is-ended":""}"
+     href="${g.url}" target="_blank" rel="noopener">
+    <img src="${g.image}" alt="${g.title}">
+    <div class="goods-copy">
+      <span>${g.status}</span>
+      <h3>${g.title}</h3>
+      ${g.price?`<small>${g.price}</small>`:""}
+      <p>${g.description}</p>
+      <strong>VIEW GOODS →</strong>
+    </div>
+  </a>`));const c=q("#particles"),x=c.getContext("2d");let w,h,p=[];function r(){w=c.width=innerWidth;h=c.height=innerHeight;p=Array.from({length:Math.min(90,Math.floor(w/18))},()=>({x:Math.random()*w,y:Math.random()*h,s:Math.random()*.35+.08,r:Math.random()*1.5+.3,col:Math.random()>.5?"211,31,67":"151,71,255"}))}function d(){x.clearRect(0,0,w,h);p.forEach(a=>{a.y-=a.s;if(a.y<0)a.y=h;x.beginPath();x.fillStyle=`rgba(${a.col},.35)`;x.arc(a.x,a.y,a.r,0,7);x.fill()});requestAnimationFrame(d)}addEventListener("resize",r);r();d();window.addEventListener("scroll",()=>{let y=scrollY;q(".hero-alrod").style.transform=`translateY(${y*.05}px)`;q(".hero-chrome").style.transform=`translateY(${y*.04}px)`;q(".hero-center").style.transform=`translateY(${y*.1}px)`});
 // v5 MUSIC archive
 const musicPreview = q("#music-list");
 const musicLibrary = q("#music-library");
@@ -237,59 +223,171 @@ document.querySelectorAll(".member-transition-link").forEach(link=>{
   },{capture:true});
 });
 
+
+// Vi-Lain v8.4 LIVE renderer with state transitions
 (function(){
   const area=document.querySelector("#live-status-area");
   const count=document.querySelector("#live-stream-count");
   if(!area||!count)return;
 
-  const streams=Array.isArray(window.LIVE_DATA?.streams)?window.LIVE_DATA.streams:[];
+  const esc=value=>String(value??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
-  const esc=v=>String(v??"")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-
-  const startedText=v=>{
-    if(!v)return "";
-    const d=new Date(v);
-    if(Number.isNaN(d.getTime()))return "";
-    const m=Math.floor(Math.max(0,Date.now()-d.getTime())/60000);
-    return m<60?`${m}分前に開始`:`${Math.floor(m/60)}時間前に開始`;
+  const elapsed=value=>{
+    if(!value)return "";
+    const date=new Date(value);
+    if(Number.isNaN(date.getTime()))return "";
+    const mins=Math.floor(Math.max(0,Date.now()-date.getTime())/60000);
+    if(mins<60)return `${mins}分前に開始`;
+    const hours=Math.floor(mins/60);
+    const remain=mins%60;
+    return remain ? `${hours}時間${remain}分前に開始` : `${hours}時間前に開始`;
   };
 
-  if(streams.length===0){
-    count.textContent="OFFLINE";
-    count.classList.remove("is-live");
-    area.innerHTML=`
-      <div class="live-offline-panel">
-        <span class="offline-pulse"></span>
-        <div>
-          <strong>OFFLINE</strong>
-          <p>現在配信中のメンバーはいません。</p>
-        </div>
-      </div>`;
-    return;
-  }
+  const getStreams=()=>Array.isArray(window.LIVE_DATA?.streams)
+    ? window.LIVE_DATA.streams
+    : [];
 
-  count.textContent=`NOW LIVE ×${streams.length}`;
-  count.classList.add("is-live");
-  area.innerHTML=`<div class="live-now-grid">${streams.map(s=>{
-    const twitch=String(s.platform).toLowerCase()==="twitch";
-    const started=startedText(s.startedAt);
-    return `
-      <a class="live-now-card ${twitch?"is-twitch":"is-youtube"}" href="${esc(s.url)}" target="_blank" rel="noopener">
-        <div class="live-thumbnail">
-          <img src="${esc(s.thumbnail)}" alt="" onerror="this.style.display='none'">
-          <span class="live-badge">LIVE NOW</span>
-        </div>
-        <div class="live-copy">
-          <div class="live-meta">
-            <strong class="live-member">${esc(s.member)}</strong>
-            <span class="live-platform">${esc(s.platform)}</span>
-          </div>
-          <h3 class="live-title">${esc(s.title||"LIVE STREAM")}</h3>
-          ${started?`<p class="live-started">${started}</p>`:""}
-          <p class="live-watch">WATCH STREAM →</p>
-        </div>
-      </a>`;
-  }).join("")}</div>`;
+  let previousCount=0;
+  let initialized=false;
+
+  const ensureFlash=()=>{
+    let flash=area.querySelector(".live-transition-flash");
+    if(!flash){
+      flash=document.createElement("div");
+      flash.className="live-transition-flash";
+      area.appendChild(flash);
+    }
+    return flash;
+  };
+
+  const triggerFlash=()=>{
+    const flash=ensureFlash();
+    flash.classList.remove("is-active");
+    void flash.offsetWidth;
+    flash.classList.add("is-active");
+    window.setTimeout(()=>flash.classList.remove("is-active"),1050);
+  };
+
+  const offlineMarkup=()=>`
+    <div class="live-offline-panel">
+      <span class="offline-pulse" aria-hidden="true"></span>
+      <div>
+        <strong>OFFLINE</strong>
+        <p>現在配信中のメンバーはいません。</p>
+      </div>
+    </div>
+  `;
+
+  const liveMarkup=streams=>`
+    <div class="live-now-grid">
+      ${streams.map(stream=>{
+        const twitch=String(stream.platform).toLowerCase()==="twitch";
+        const started=elapsed(stream.startedAt);
+
+        return `
+          <a class="live-now-card ${twitch?"is-twitch":"is-youtube"}"
+             href="${esc(stream.url)}"
+             target="_blank"
+             rel="noopener">
+            <div class="live-thumbnail">
+              <img src="${esc(stream.thumbnail)}"
+                   alt=""
+                   onerror="this.style.display='none'">
+              <span class="live-badge">LIVE NOW</span>
+            </div>
+
+            <div class="live-copy">
+              <div class="live-meta">
+                <strong class="live-member">${esc(stream.member)}</strong>
+                <span class="live-platform">${esc(stream.platform)}</span>
+              </div>
+
+              <h3 class="live-title">${esc(stream.title||"LIVE STREAM")}</h3>
+              ${started?`<p class="live-started">${started}</p>`:""}
+              <p class="live-watch">WATCH STREAM →</p>
+            </div>
+          </a>
+        `;
+      }).join("")}
+    </div>
+  `;
+
+  const animateCardsIn=()=>{
+    const cards=[...area.querySelectorAll(".live-now-card")];
+    cards.forEach(card=>{
+      requestAnimationFrame(()=>card.classList.add("is-entering"));
+    });
+  };
+
+  const render=()=>{
+    const streams=getStreams();
+    const currentCount=streams.length;
+    const becameLive=initialized && previousCount===0 && currentCount>0;
+    const becameOffline=initialized && previousCount>0 && currentCount===0;
+
+    if(currentCount===0){
+      count.textContent="OFFLINE";
+      count.classList.remove("is-live");
+
+      const existingCards=[...area.querySelectorAll(".live-now-card")];
+
+      if(becameOffline && existingCards.length){
+        existingCards.forEach(card=>card.classList.add("is-leaving"));
+
+        window.setTimeout(()=>{
+          area.innerHTML=offlineMarkup();
+          ensureFlash();
+          triggerFlash();
+
+          const panel=area.querySelector(".live-offline-panel");
+          requestAnimationFrame(()=>panel?.classList.add("is-entering"));
+        },430);
+      }else{
+        area.innerHTML=offlineMarkup();
+        ensureFlash();
+
+        if(!initialized){
+          area.querySelector(".live-offline-panel")?.classList.add("is-entering");
+        }
+      }
+    }else{
+      count.textContent=`NOW LIVE ×${currentCount}`;
+      count.classList.add("is-live");
+
+      const offline=area.querySelector(".live-offline-panel");
+
+      if(becameLive && offline){
+        offline.classList.add("is-leaving");
+
+        window.setTimeout(()=>{
+          area.innerHTML=liveMarkup(streams);
+          ensureFlash();
+          triggerFlash();
+          animateCardsIn();
+        },380);
+      }else{
+        area.innerHTML=liveMarkup(streams);
+        ensureFlash();
+        animateCardsIn();
+
+        if(!initialized){
+          window.setTimeout(triggerFlash,120);
+        }
+      }
+    }
+
+    previousCount=currentCount;
+    initialized=true;
+  };
+
+  render();
+
+  // Public hook for future live-data refreshes without reloading the page.
+  window.VILAIN_REFRESH_LIVE=render;
 })();
+

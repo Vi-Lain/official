@@ -160,10 +160,59 @@ Chromの歌ってみたを7本追加しました。
 - 君のオシゴト手伝います！
 - 神っぽいな
 
-## LIVE STATUS UI
-- ALROD / CHROMのYouTube・Twitchに対応
-- 最大4枠を同時表示
-- 同一メンバーのYouTube・Twitchも別枠
-- 配信予定枠は非表示
-- 配信がない時はOFFLINEのみ表示
-- 現在はdata/live.jsが空なのでOFFLINE表示
+
+## Vi-Lain Official v8.0
+- v7.0 Chrom v4の承認済みTOPを土台に再構築
+- LIVE STATUSを他セクションと同じ見出しサイズへ統一
+- OFFLINE表示を大きなステータスパネルへ統一
+- LIVE API / GitHub Actions対応
+- イントロを独立したCanvas固定レイヤーで実装
+- 赤・ピンクの光、粒子、光線、スキャン、ズームを強化
+- イントロ終了時にDOM・CSS・Canvasを完全削除
+- SOUND ON/OFF保存
+- 右下の↻ボタンからイントロ再生可能
+
+
+## v8.1 MEMBER polish
+- Chromの日本語表記を「クロム・ヴァン・ラヴィリー」へ変更
+- ALROD / CHROMの日本語名の余白・文字間隔を統一
+- VIEW PROFILEの位置とホバーを調整
+- MEMBERカードのホバーを滑らかに改善
+
+
+## v8.2 TOP logo motion
+- TOP中央ロゴに約8秒周期のごく弱い浮遊感
+- 約9秒に一度だけ金属反射が横切る
+- 中央宝石付近に控えめな鼓動エフェクト
+- ロゴ画像は assets/logo-temp.webp のまま
+- 完成ロゴへ差し替える際は同じファイル名で置換可能
+- prefers-reduced-motion対応
+
+
+## v8.3 Hero correction
+- TOPロゴ枠を元の最大650px / 48vwへ復元
+- 巨大化したロゴが左右キャラクターへ重なる問題を修正
+- ALROD / CHROMの表示領域と元の配置を維持
+- 金属反射を細い斜め光へ改善
+- 中央宝石の発光を赤からピンクへ自然に変化
+
+
+## v8.4 LIVE transition
+- OFFLINEからLIVEへの切り替え時に赤・ピンクの光線が横切る
+- LIVEカードが下から順番にスライドイン
+- 最大4カードまで段階的に表示
+- LIVE終了時はカードがフェードアウトしてOFFLINEへ切り替え
+- OFFLINEパネルも滑らかに出現
+- NOW LIVEバッジにポップ演出
+- prefers-reduced-motion対応
+
+
+## v9.0 GitHub CMS
+- GitHub ActionsフォームからNEWSを追加
+- MUSICはYouTube URLだけで追加可能
+- GOODSの販売状況・価格・画像・リンクを管理
+- EVENTを登録し、NEWSへ同時掲載可能
+- 下書き、公開、非表示、削除、JSON形式の編集
+- 公開予約を30分ごとに自動反映
+- サイト閲覧者には管理UIを表示しない
+- 詳細はCMS_GUIDE.md
