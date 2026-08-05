@@ -216,3 +216,13 @@ Chromの歌ってみたを7本追加しました。
 - 公開予約を30分ごとに自動反映
 - サイト閲覧者には管理UIを表示しない
 - 詳細はCMS_GUIDE.md
+
+
+## v10.0 Admin Dashboard
+- Cloudflare Accessで保護された専用管理画面
+- NEWS / MUSIC / GOODS / EVENTをGUIで追加・編集・非表示・削除
+- GitHub APIを通してcms/content.jsonを更新
+- GitHubトークンはCloudflare Worker Secretへ保存
+- 許可メールアドレスの二重チェック
+- 公開サイトには管理画面へのリンクを表示しない
+- セットアップ方法はADMIN_SETUP.md

@@ -1,0 +1,15 @@
+name = "vilain-admin"
+main = "src/worker.js"
+compatibility_date = "2026-08-01"
+
+[vars]
+GITHUB_OWNER = "YOUR_GITHUB_USERNAME"
+GITHUB_REPO = "official"
+GITHUB_BRANCH = "main"
+CMS_PATH = "cms/content.json"
+ALLOWED_EMAILS = "your-email@example.com"
+
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = true
