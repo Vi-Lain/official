@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+from generate_cms_workflows import generate_workflows
+
 ROOT = Path(__file__).resolve().parents[1]
 CMS_FILE = ROOT / "cms" / "content.json"
 OUTPUT_FILE = ROOT / "data" / "content.js"
@@ -446,6 +448,7 @@ def main() -> None:
         save(data)
     build(data)
     write_index(data)
+    generate_workflows(data)
 
 
 if __name__ == "__main__":

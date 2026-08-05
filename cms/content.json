@@ -2,6 +2,15 @@
   "version": 1,
   "news": [
     {
+      "id": "news-site-start",
+      "date": "2026-08-04",
+      "category": "INFO",
+      "title": "Vi-Lain Official Website 制作開始",
+      "url": "",
+      "published": true,
+      "publishAt": ""
+    },
+    {
       "id": "news-alrod-3rd-goods",
       "date": "2026-07-15",
       "category": "GOODS",
