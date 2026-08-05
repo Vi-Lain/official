@@ -242,3 +242,12 @@ Chromの歌ってみたを7本追加しました。
 - CMS 08 選択肢の手動再生成を追加
 - Cloudflareや外部サービスは不使用
 - 詳細はGITHUB_ONLY_SETUP.md
+
+
+## v11.1 Workflow YAML fix
+- checkoutステップの重複`with:`を修正
+- 自動生成スクリプトも修正
+- CMS_PAT方式を維持
+- 編集・削除のタイトル選択式を維持
+- 全Workflowの構造チェックを実施
+- 検証結果はWORKFLOW_VALIDATION.md
