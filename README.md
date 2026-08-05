@@ -218,11 +218,10 @@ Chromの歌ってみたを7本追加しました。
 - 詳細はCMS_GUIDE.md
 
 
-## v10.0 Admin Dashboard
-- Cloudflare Accessで保護された専用管理画面
-- NEWS / MUSIC / GOODS / EVENTをGUIで追加・編集・非表示・削除
-- GitHub APIを通してcms/content.jsonを更新
-- GitHubトークンはCloudflare Worker Secretへ保存
-- 許可メールアドレスの二重チェック
-- 公開サイトには管理画面へのリンクを表示しない
-- セットアップ方法はADMIN_SETUP.md
+## v10.1 GitHub-only CMS
+- Cloudflare Workerと外部管理画面を廃止
+- GitHub Actionsだけで追加・編集・削除
+- cms/INDEX.mdへタイトルとIDの一覧を自動生成
+- 編集フォームでは変更する欄だけ入力
+- 削除時はDELETE確認文字が必要
+- GitHubの書き込み権限を持つ人だけ操作可能

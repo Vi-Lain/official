@@ -12,6 +12,7 @@ from urllib.parse import parse_qs, urlparse
 ROOT = Path(__file__).resolve().parents[1]
 CMS_FILE = ROOT / "cms" / "content.json"
 OUTPUT_FILE = ROOT / "data" / "content.js"
+INDEX_FILE = ROOT / "cms" / "INDEX.md"
 
 CATEGORIES = {"INFO", "MUSIC", "GOODS", "EVENT", "LIVE"}
 GOODS_STATUSES = {"COMING SOON", "ON SALE", "SOLD OUT", "販売終了"}
@@ -259,6 +260,94 @@ def list_items(data: dict) -> None:
             )
 
 
+
+def write_index(data: dict) -> None:
+    lines = [
+        "# Vi-Lain CMS 登録一覧",
+        "",
+        "編集・非表示・削除をするときは、対象項目の `ID` をGitHub Actionsへ入力します。",
+        "",
+    ]
+
+    for collection, title in (
+        ("news", "NEWS"),
+        ("music", "MUSIC"),
+        ("goods", "GOODS"),
+        ("events", "EVENT"),
+    ):
+        lines.extend([f"## {title}", ""])
+        items = data.get(collection, [])
+
+        if not items:
+            lines.extend(["登録なし", ""])
+            continue
+
+        lines.extend([
+            "| ID | 状態 | タイトル |",
+            "|---|---|---|",
+        ])
+
+        for item in items:
+            state = "公開" if item.get("published", True) else "非表示"
+            title_value = str(item.get("title", "")).replace("|", "｜")
+            lines.append(f"| `{item.get('id', '')}` | {state} | {title_value} |")
+
+        lines.append("")
+
+    INDEX_FILE.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def edit_item(args: argparse.Namespace, data: dict) -> None:
+    collection = args.collection.lower()
+    if collection not in {"news", "music", "goods", "events"}:
+        raise SystemExit("対象種類が不正です。")
+
+    item = next(
+        (x for x in data.get(collection, []) if x.get("id") == args.id),
+        None,
+    )
+    if not item:
+        raise SystemExit(f"IDが見つかりません: {args.id}")
+
+    updates = {
+        "title": args.title,
+        "date": args.date,
+        "category": args.category,
+        "artist": args.artist,
+        "url": args.url,
+        "image": args.image,
+        "status": args.status,
+        "price": args.price,
+        "description": args.description,
+        "publishAt": args.publish_at,
+    }
+
+    for key, value in updates.items():
+        if value != "":
+            item[key] = value
+
+    if args.published != "keep":
+        item["published"] = args.published == "true"
+
+    if collection == "music" and args.url:
+        video_id = youtube_id(args.url)
+        item["youtubeId"] = video_id
+        item["url"] = f"https://www.youtube.com/watch?v={video_id}"
+
+
+def delete_item(args: argparse.Namespace, data: dict) -> None:
+    collection = args.collection.lower()
+    if collection not in {"news", "music", "goods", "events"}:
+        raise SystemExit("対象種類が不正です。")
+
+    items = data.get(collection, [])
+    item = next((x for x in items if x.get("id") == args.id), None)
+    if not item:
+        raise SystemExit(f"IDが見つかりません: {args.id}")
+
+    items.remove(item)
+
+
 def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser()
     sub = p.add_subparsers(dest="command", required=True)
@@ -307,6 +396,25 @@ def parser() -> argparse.ArgumentParser:
     manage_p.add_argument("--action", required=True, choices=["publish", "hide", "delete", "update"])
     manage_p.add_argument("--updates", default="{}")
 
+    edit = sub.add_parser("edit")
+    edit.add_argument("--collection", required=True)
+    edit.add_argument("--id", required=True)
+    edit.add_argument("--title", default="")
+    edit.add_argument("--date", default="")
+    edit.add_argument("--category", default="")
+    edit.add_argument("--artist", default="")
+    edit.add_argument("--url", default="")
+    edit.add_argument("--image", default="")
+    edit.add_argument("--status", default="")
+    edit.add_argument("--price", default="")
+    edit.add_argument("--description", default="")
+    edit.add_argument("--published", default="keep", choices=["keep", "true", "false"])
+    edit.add_argument("--publish-at", default="")
+
+    delete = sub.add_parser("delete")
+    delete.add_argument("--collection", required=True)
+    delete.add_argument("--id", required=True)
+
     sub.add_parser("build")
     sub.add_parser("list")
     return p
@@ -326,6 +434,10 @@ def main() -> None:
         add_event(args, data)
     elif args.command == "manage":
         manage(args, data)
+    elif args.command == "edit":
+        edit_item(args, data)
+    elif args.command == "delete":
+        delete_item(args, data)
     elif args.command == "list":
         list_items(data)
         return
@@ -333,6 +445,7 @@ def main() -> None:
     if args.command != "build":
         save(data)
     build(data)
+    write_index(data)
 
 
 if __name__ == "__main__":
