@@ -1,4 +1,4 @@
-name: "CMS 06 - 公開予約を反映"
+name: "CMS 07 - 公開予約を反映"
 
 on:
   schedule:
@@ -22,7 +22,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/content.js
+          git add data/content.js cms/INDEX.md .github/workflows/cms-edit.yml .github/workflows/cms-delete.yml
           if git diff --cached --quiet; then
             echo "No scheduled changes."
             exit 0
