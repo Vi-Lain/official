@@ -1,13 +1,4 @@
 window.LIVE_DATA = {
-  "updatedAt": "2026-08-11T14:44:12.758007+00:00",
-  "streams": [
-    {
-      "member": "ALROD",
-      "platform": "Twitch",
-      "title": "スーパーニートサポーター #らんどぶいっ！",
-      "url": "https://www.twitch.tv/alrod_vtuber",
-      "thumbnail": "https://static-cdn.jtvnw.net/previews-ttv/live_user_alrod_vtuber-1280x720.jpg",
-      "startedAt": "2026-08-11T12:18:27Z"
-    }
-  ]
+  "updatedAt": "2026-08-11T18:03:10.887231+00:00",
+  "streams": []
 };
