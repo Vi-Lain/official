@@ -1,19 +1,12 @@
 {
-  "updatedAt": "2026-08-12T15:16:37.905003+00:00",
+  "updatedAt": "2026-08-12T18:14:20.568887+00:00",
   "platforms": {
     "youtube": {
       "ALROD": null,
       "CHROM": null
     },
     "twitch": {
-      "ALROD": {
-        "member": "ALROD",
-        "platform": "Twitch",
-        "title": "スーパーニートサポーター DAY2 #らんどぶいっ！",
-        "url": "https://www.twitch.tv/alrod_vtuber",
-        "thumbnail": "https://static-cdn.jtvnw.net/previews-ttv/live_user_alrod_vtuber-1280x720.jpg",
-        "startedAt": "2026-08-12T12:27:42Z"
-      },
+      "ALROD": null,
       "CHROM": null
     }
   }
