@@ -1,13 +1,4 @@
 window.LIVE_DATA = {
-  "updatedAt": "2026-08-24T16:06:19.613202+00:00",
-  "streams": [
-    {
-      "member": "ALROD",
-      "platform": "Twitch",
-      "title": "ひっそり おまわりさん",
-      "url": "https://www.twitch.tv/alrod_vtuber",
-      "thumbnail": "https://static-cdn.jtvnw.net/previews-ttv/live_user_alrod_vtuber-1280x720.jpg",
-      "startedAt": "2026-08-24T12:39:42Z"
-    }
-  ]
+  "updatedAt": "2026-08-24T17:50:21.435626+00:00",
+  "streams": []
 };
