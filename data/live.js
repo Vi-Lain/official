@@ -1,4 +1,13 @@
 window.LIVE_DATA = {
-  "updatedAt": "2026-09-13T06:05:23.366968+00:00",
-  "streams": []
+  "updatedAt": "2026-09-13T11:44:12.696446+00:00",
+  "streams": [
+    {
+      "member": "ALROD",
+      "platform": "Twitch",
+      "title": "御影或 視点 DAY18 #シミュグラ4",
+      "url": "https://www.twitch.tv/alrod_vtuber",
+      "thumbnail": "https://static-cdn.jtvnw.net/previews-ttv/live_user_alrod_vtuber-1280x720.jpg",
+      "startedAt": "2026-09-13T10:49:20Z"
+    }
+  ]
 };
