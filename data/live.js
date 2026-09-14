@@ -1,4 +1,13 @@
 window.LIVE_DATA = {
-  "updatedAt": "2026-09-14T10:33:52.768444+00:00",
-  "streams": []
+  "updatedAt": "2026-09-14T16:31:47.824791+00:00",
+  "streams": [
+    {
+      "member": "ALROD",
+      "platform": "YouTube",
+      "title": "【 #はるめろ学園ARK部 /DAY1 】 超初心者Arkの旅。恐竜こぶしで倒せるだろ。 【 アルロッド / Vtuber】",
+      "url": "https://www.youtube.com/watch?v=V5gHQcsY1tU",
+      "thumbnail": "https://i.ytimg.com/vi/V5gHQcsY1tU/hqdefault_live.jpg",
+      "startedAt": "2026-09-14T11:25:57Z"
+    }
+  ]
 };
