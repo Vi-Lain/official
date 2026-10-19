@@ -1,13 +1,4 @@
 window.LIVE_DATA = {
-  "updatedAt": "2026-10-19T19:15:58.887541+00:00",
-  "streams": [
-    {
-      "member": "ALROD",
-      "platform": "Twitch",
-      "title": "チャンター レベル0 #AION2",
-      "url": "https://www.twitch.tv/alrod_vtuber",
-      "thumbnail": "https://static-cdn.jtvnw.net/previews-ttv/live_user_alrod_vtuber-1280x720.jpg",
-      "startedAt": "2026-10-19T13:32:34Z"
-    }
-  ]
+  "updatedAt": "2026-10-19T22:56:14.820534+00:00",
+  "streams": []
 };
