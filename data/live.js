@@ -1,13 +1,4 @@
 window.LIVE_DATA = {
-  "updatedAt": "2026-11-12T12:35:44.895761+00:00",
-  "streams": [
-    {
-      "member": "ALROD",
-      "platform": "Twitch",
-      "title": "シミュグラ デルタフォースカスタム",
-      "url": "https://www.twitch.tv/alrod_vtuber",
-      "thumbnail": "https://static-cdn.jtvnw.net/previews-ttv/live_user_alrod_vtuber-1280x720.jpg",
-      "startedAt": "2026-11-12T12:04:01Z"
-    }
-  ]
+  "updatedAt": "2026-11-12T20:24:55.137448+00:00",
+  "streams": []
 };
